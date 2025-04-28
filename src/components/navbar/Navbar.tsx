@@ -128,7 +128,6 @@ export default function Navbar({ isAuthenticated, logout }: {
 }) {
 
     const [displayMenu, setDisplayMenu] = useState(false)
-    console.log('navbar ' + isAuthenticated)
     function updateSetDisplay() {
         setDisplayMenu(false)
     }

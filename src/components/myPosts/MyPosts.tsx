@@ -94,6 +94,24 @@ export default function MyPosts() {
         setSearchParams({ page: nextPageNumber })
     }
 
+    if (posts.length === 0) {
+        return <div className="fixed top-0 left-0 h-screen flex justify-center items-center w-screen">
+            <div>
+                <h1 className="text-lg font-semibold mb-3 md:mb-4 md:text-xl lg:text-3xl lg:mb-6 ">No posts found. Please check back later!</h1>
+                <div className="flex justify-center items-center gap-x-6 lg:gap-x-10 ">
+                    <button className="bg-slate-700 text-white px-3 py-1 rounded text-sm block hover:bg-slate-800 lg:text-lg md:text-base cursor-pointer"
+                        onClick={() => navigate('/')}>
+                        Home
+                    </button>
+                    <button className="bg-blue-500 text-white px-3 py-1 rounded text-sm block hover:bg-blue-600  lg:text-lg md:text-base cursor-pointer"
+                        onClick={() => navigate('/editor')}
+                    >Publish
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+
     return <BlogLayout title="My Posts" currentPage={currentPage} totalPages={totalPages} prevPage={prevPage} nextPage={nextPage} showSearchBar={false} onClickSearch={() => { }} searchQuery="">
         {
             posts.map(eachPost => {
