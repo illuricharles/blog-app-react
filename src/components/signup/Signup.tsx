@@ -24,8 +24,9 @@ export default function Signup() {
     }, [isAuthenticated, navigate])
 
     async function onSubmit(data: UserSchemaTypes) {
+        const apiUrl = import.meta.env.VITE_API_URL
         try {
-            const response = await axios.post("http://localhost:3005/api/v1/user/register", data)
+            const response = await axios.post(`${apiUrl}/api/v1/user/register`, data)
             console.log(response)
             navigate('/signin')
         }
