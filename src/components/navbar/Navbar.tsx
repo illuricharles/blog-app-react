@@ -35,7 +35,7 @@ function DisplayMenuHamburger({ isAuthenticated, logout, updateSetDisplay }: {
                         <button className="text-red-600 rounded block" onClick={() => {
                             logout()
                             updateSetDisplay()
-                            navigate(0)
+                            navigate('/')
                         }}>
                             Logout
                         </button>
@@ -58,10 +58,7 @@ function DisplayMenuHamburger({ isAuthenticated, logout, updateSetDisplay }: {
                     </li>
 
                 </>
-            )
-            }
-
-
+            )}
         </ul>
     )
 }
@@ -114,10 +111,7 @@ function DisplayMenu({ isAuthenticated, logout }: {
                         </button>
                     </li>
                 </>
-            )
-            }
-
-
+            )}
         </ul>
     )
 }

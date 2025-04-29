@@ -6,8 +6,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import Loader from "../loader/Loader"
 import { BsExclamationTriangleFill } from "react-icons/bs"
 import BlogComments from "./BlogComments"
-import Cookies from "js-cookie"
-import { jwtDecode } from "jwt-decode"
+import { useAuth } from "../../hooks/useAuth"
 
 interface Comment {
   comment: string,
@@ -26,10 +25,11 @@ export default function BlogContent() {
   const commentRef = useRef<HTMLInputElement>(null)
   const [commentError, setCommentError] = useState("")
   const [isCommentSubmitting, setIsCommentSubmitting] = useState(false)
-  const [decodedJwtUserId, setDecodedJwtUserId] = useState("")
   const navigate = useNavigate()
   const { id } = useParams()
   const content = null
+  const { userId } = useAuth()
+
   const editor = useEditor({
     extensions,
     content,
@@ -40,19 +40,6 @@ export default function BlogContent() {
       }
     }
   })
-
-  useEffect(() => {
-    const token = Cookies.get('token')
-    if (token) {
-
-      const decoded: {
-        id: string
-      } = jwtDecode(token)
-
-      setDecodedJwtUserId(decoded.id)
-    }
-  }, [])
-
 
   useEffect(() => {
     async function getBlog() {
@@ -104,7 +91,10 @@ export default function BlogContent() {
     </div>
   }
 
-  if (!editor) return null
+
+  if (!editor) {
+    return null
+  }
 
   async function onSubmitComment() {
     const apiUrl = import.meta.env.VITE_API_URL
@@ -147,10 +137,16 @@ export default function BlogContent() {
     setComments(newComments)
   }
 
+
+
   return (
     <div className="mb-15">
       <div className="lg:max-w-11/12 lg:m-auto xl:max-w-10/12 py-1 px-5 md:p-3 md:px-5 lg:px-6">
-        <EditorContent editor={editor} />
+        {editor.getText().length === 0 ?
+          <div className="w-full mt-6 flex justify-center items-center min-h-[200px]">
+            <Loader />
+          </div> :
+          <EditorContent editor={editor} />}
         <div className="mt-5 lg:mt-3">
           <h3 className="text-xl font-semibold mb-4 lg:text-2xl">Response</h3>
           <div className="flex  justify-center items-center bg-gray-100 rounded p-2 xl:mx-auto">
@@ -163,8 +159,7 @@ export default function BlogContent() {
           <hr className="border-t border-slate-300/40 mt-4 mb-3" />
           <div className="px-1 space-y-3">
             {comments.map(eachComment => {
-
-              return <BlogComments updateComments={updateComments} showDeleteButton={decodedJwtUserId === eachComment.userId} key={eachComment.id} commentId={eachComment.id} username={eachComment.user.username} createdAt={eachComment.createdAt} comment={eachComment.comment} />
+              return <BlogComments updateComments={updateComments} showDeleteButton={userId === eachComment.userId} key={eachComment.id} commentId={eachComment.id} username={eachComment.user.username} createdAt={eachComment.createdAt} comment={eachComment.comment} />
             })}
           </div>
         </div>

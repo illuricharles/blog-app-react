@@ -55,7 +55,7 @@ export default function BlogCard({ title, description, imageUrl, author, created
                 <div className="p-2 text-slate-900 ">
                     <h3 className="text-lg font-semibold mb-3 lg:mb-4">Confirmation</h3>
                 </div>
-                <p className=" font-semibold text-center">Are you sure you want to delete this post?</p>
+                <p className=" font-semibold text-center lg:text-lg">Are you sure you want to delete this post?</p>
                 <div className="flex flex-col justify-center items-center mt-5 gap-y-3 text-center mb-3">
                     <button className="cursor-pointer text-white bg-red-600 font-semibold px-5 py-1 block rounded w-fit"
                         onClick={() => handleDeleteBlog()}
