@@ -26,7 +26,7 @@ interface Post {
 
 export default function MyPosts() {
     const { isAuthenticated } = useAuth()
-    const [posts, setPosts] = useState<Post[]>([])
+    const [posts, setPosts] = useState<Post[] | null>(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     const [totalPages, setTotalPages] = useState<number>(1)
@@ -67,7 +67,7 @@ export default function MyPosts() {
 
 
 
-    if (loading) {
+    if (loading || posts === null) {
         return <div className="absolute top-0 left-0 h-screen w-screen flex justify-center items-center z-0">
             <Loader />
         </div>

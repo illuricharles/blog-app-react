@@ -15,6 +15,7 @@ export default function BlogCard({ title, description, imageUrl, author, created
 }) {
     const [showConfirmationBox, setShowConfirmationBox] = useState(false)
     const [error, setError] = useState("")
+    const [submitting, setSubmitting] = useState(false)
     const navigate = useNavigate()
 
     const formattedDate = new Date(createdAt).toLocaleDateString('en-GB', {
@@ -25,9 +26,12 @@ export default function BlogCard({ title, description, imageUrl, author, created
 
 
     async function handleDeleteBlog() {
+        setError("")
+        setSubmitting(true)
         try {
             const apiUrl = import.meta.env.VITE_API_URL
             await axios.delete(`${apiUrl}/api/v1/post/${id}`, { withCredentials: true })
+            setShowConfirmationBox(false)
             navigate(0)
         }
         catch (e) {
@@ -43,6 +47,9 @@ export default function BlogCard({ title, description, imageUrl, author, created
                 setError('Something went wrong. Please try again after sometime.')
             }
         }
+        finally{
+            setSubmitting(false)
+        }
     }
 
 
@@ -57,10 +64,10 @@ export default function BlogCard({ title, description, imageUrl, author, created
                 </div>
                 <p className=" font-semibold text-center lg:text-lg">Are you sure you want to delete this post?</p>
                 <div className="flex flex-col justify-center items-center mt-5 gap-y-3 text-center mb-3">
-                    <button className="cursor-pointer text-white bg-red-600 font-semibold px-5 py-1 block rounded w-fit"
+                    <button className="cursor-pointer text-white bg-red-600 font-semibold px-5 py-1 block rounded w-fit" disabled={submitting}
                         onClick={() => handleDeleteBlog()}
                     >
-                        Yes
+                        {submitting ? "Deleting..." : "Yes"}
                     </button>
                     {error && <p className="text-sm font-semibold text-red-600">{error}</p>}
                 </div>
