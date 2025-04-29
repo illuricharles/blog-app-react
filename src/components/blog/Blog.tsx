@@ -66,8 +66,8 @@ export default function Blog() {
     if (error || totalPages === null) {
         return <div className="absolute w-screen h-screen top-0 left-0 flex justify-center items-center">
             <div className="flex flex-col justify-center items-center shadow-md bg-red-100 py-5 rounded">
-                <BsExclamationTriangleFill size={30} className="text-red-600 mb-2" />
-                <p className="w-9/12 text-center md:font-semibold">{error}</p>
+                <BsExclamationTriangleFill size={30} className="text-red-600 mb-2 lg:size-8"  />
+                <p className="w-9/12 text-center md:font-semibold lg:text-lg">{error}</p>
             </div>
         </div>
     }
