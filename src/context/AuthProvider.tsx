@@ -45,8 +45,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function logout() {
-    // Cookies.remove('token');
-    // setIsAuthenticated(false);
     try {
       const apiUrl = import.meta.env.VITE_API_URL;
       await axios.post(`${apiUrl}/api/v1/user/logout`, {}, {withCredentials: true})

@@ -56,7 +56,10 @@ export default function BlogContent() {
       }
       catch (e) {
         if (axios.isAxiosError(e)) {
-          if (e.response?.data.message) {
+          if(e.response?.status === 404) {
+            setError('The post you are trying to access could not be found. It might have been deleted or the link is incorrect.')
+          }
+          else if (e.response?.data.message) {
             setError(e.response.data.message)
           }
           else {
@@ -84,9 +87,9 @@ export default function BlogContent() {
 
   if (error) {
     return <div className="absolute w-screen h-screen top-0 left-0 flex justify-center items-center">
-      <div className="flex flex-col justify-center items-center shadow-md bg-red-100 py-5 rounded">
+      <div className="flex flex-col justify-center items-center shadow-md bg-red-100 py-5 rounded max-w-9/12 md:max-w-7/12 md:px-3 lg:max-w-5/12">
         <BsExclamationTriangleFill size={30} className="text-red-600 mb-2" />
-        <p className="w-9/12 text-center md:font-semibold">{error}</p>
+        <p className="w-9/12 text-center md:font-semibold font-medium md:w-fit">{error}</p>
       </div>
     </div>
   }

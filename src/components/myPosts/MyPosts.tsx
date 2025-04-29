@@ -112,10 +112,19 @@ export default function MyPosts() {
         </div>
     }
 
+    function onDeleteBlogPost(postId: string) {
+        if(posts) {
+            const updatedPosts = posts.filter(eachPost => eachPost.id !== postId)
+            setPosts(updatedPosts)
+        }
+        
+    }
+
     return <BlogLayout title="My Posts" currentPage={currentPage} totalPages={totalPages} prevPage={prevPage} nextPage={nextPage} showSearchBar={false} onClickSearch={() => { }} searchQuery="">
         {
             posts.map(eachPost => {
                 return <BlogCard key={eachPost.id}
+                    onDeleteBlogPost = {onDeleteBlogPost}
                     id={eachPost.id}
                     title={eachPost.title}
                     description={eachPost.description}

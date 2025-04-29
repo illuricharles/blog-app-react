@@ -3,20 +3,20 @@ import axios from "axios";
 import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
-export default function BlogCard({ title, description, imageUrl, author, createdAt, showDeleteButton, id }: {
+import { Link } from "react-router-dom";
+export default function BlogCard({ title, description, imageUrl, author, createdAt, showDeleteButton, id, onDeleteBlogPost }: {
     title: string,
     description: string,
     imageUrl: string | null,
     author: string,
     createdAt: Date,
     showDeleteButton?: boolean,
-    id: string
+    id: string,
+    onDeleteBlogPost?: (id: string) => void
 }) {
     const [showConfirmationBox, setShowConfirmationBox] = useState(false)
     const [error, setError] = useState("")
     const [submitting, setSubmitting] = useState(false)
-    const navigate = useNavigate()
 
     const formattedDate = new Date(createdAt).toLocaleDateString('en-GB', {
         day: '2-digit',
@@ -32,7 +32,9 @@ export default function BlogCard({ title, description, imageUrl, author, created
             const apiUrl = import.meta.env.VITE_API_URL
             await axios.delete(`${apiUrl}/api/v1/post/${id}`, { withCredentials: true })
             setShowConfirmationBox(false)
-            navigate(0)
+            if(onDeleteBlogPost) {
+                onDeleteBlogPost(id)
+            }
         }
         catch (e) {
             if (axios.isAxiosError(e)) {
