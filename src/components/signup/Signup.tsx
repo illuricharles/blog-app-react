@@ -67,7 +67,7 @@ export default function Signup() {
     }
 
     return <div className="w-screen h-screen flex justify-center items-center bg-gray-100">
-        <div className="shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-7 rounded-md bg-white w-[350px] md:w-[350px] ">
+        <div className="shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-7 rounded-md bg-white md:min-w-[350px]">
             <div className="mb-3 md:text-center">
                 <h1 className="text-center mb-2 text-2xl font-semibold">Create an account</h1>
                 <span className="text-gray-800">Please enter your details to signup</span>

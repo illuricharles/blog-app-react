@@ -97,7 +97,7 @@ export default function Signup() {
             {errors.root?.message && <FormErrorMessage message={errors.root.message} />}
             <div className="md:text-center flex justify-center mt-2">
                 <span className="text-sm text-slate-900">
-                    Already have an account?  <Link to="/signup" className="font-semibold hover:underline text-black underline"> Sign up</Link>
+                    Don’t have an account?  <Link to="/signup" className="font-semibold hover:underline text-black underline"> Sign up</Link>
                 </span>
 
             </div>
