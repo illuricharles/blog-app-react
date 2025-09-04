@@ -30,7 +30,11 @@ export default function BlogCard({ title, description, imageUrl, author, created
         setSubmitting(true)
         try {
             const apiUrl = import.meta.env.VITE_API_URL
-            await axios.delete(`${apiUrl}/api/v1/post/${id}`, { withCredentials: true })
+            await axios.delete(`${apiUrl}/api/v1/post/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
             setShowConfirmationBox(false)
             if(onDeleteBlogPost) {
                 onDeleteBlogPost(id)

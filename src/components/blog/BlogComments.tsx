@@ -27,7 +27,11 @@ export default function BlogComments({ commentId, username, createdAt, comment, 
         
         try {
             const apiUrl = import.meta.env.VITE_API_URL
-            const response = await axios.delete(`${apiUrl}/api/v1/post/comment/${commentId}`, { withCredentials: true })
+            const response = await axios.delete(`${apiUrl}/api/v1/post/comment/${commentId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
             const { id } = response.data.comment
             updateComments(id)
         }

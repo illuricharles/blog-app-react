@@ -47,7 +47,9 @@ export default function PublishFinalForm({ onClickCloseForm, content }: {
       return imageUrl
     }
     catch (e) {
-      console.log(e)
+      if (import.meta.env.DEV) {
+        console.error(e)
+      }
       setError('root', {
         type: "manual",
         message: "Something went wrong. Please try again after sometime."
@@ -68,7 +70,9 @@ export default function PublishFinalForm({ onClickCloseForm, content }: {
         description: data.description,
         imageUrl
       }, {
-        withCredentials: true
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
       })
 
       const { post } = response.data

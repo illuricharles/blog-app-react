@@ -25,9 +25,13 @@ export default function Signup() {
     async function onSubmit(data: UserSchemaTypes) {
         const apiUrl = import.meta.env.VITE_API_URL
         try {
-            await axios.post(`${apiUrl}/api/v1/user/signin`, data, {
-                withCredentials: true
-            })
+            const response = await axios.post(`${apiUrl}/api/v1/user/signin`, data)
+            if(response.data.token) {
+                localStorage.setItem('token', response.data.token)
+            }
+            else {
+                throw new Error('Something went wrong. Please try again later.')
+            }
             signin()
             navigate('/')
         }

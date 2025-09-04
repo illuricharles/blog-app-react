@@ -26,12 +26,10 @@ export default function Signup() {
     async function onSubmit(data: UserSchemaTypes) {
         const apiUrl = import.meta.env.VITE_API_URL
         try {
-            const response = await axios.post(`${apiUrl}/api/v1/user/register`, data)
-            console.log(response)
+            await axios.post(`${apiUrl}/api/v1/user/register`, data)
             navigate('/signin')
         }
         catch (e) {
-            console.log(e)
             if (axios.isAxiosError(e)) {
                 if (e.response?.data.message) {
                     setError('root', {

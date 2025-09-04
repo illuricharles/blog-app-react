@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 interface Status {
   loggedIn: boolean,
@@ -11,12 +11,16 @@ interface Status {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [userId, setUserId] = useState<string | null>(null)
+  const [authError, setAuthError] = useState("")
 
   async function getStatus() {
+
     try {
       const apiUrl = import.meta.env.VITE_API_URL;
       const response = await axios.get<Status>(`${apiUrl}/api/v1/user/me`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
       });
       if (response.status === 200 && response.data.loggedIn) {
         
@@ -24,14 +28,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if(response.data.userId) {
           setUserId(response.data.userId)
         }
+        setAuthError("")
       } else {
         setIsAuthenticated(false);
         setUserId(null)
+        setAuthError("")
       }
     } catch (e) {
       setIsAuthenticated(false);
       setUserId(null)
-      console.error(e);
+      if(e instanceof AxiosError) {
+        setAuthError(e.response?.data.message || "Something went wrong. Please try again later")
+      }
     }
   }
 
@@ -45,19 +53,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function logout() {
-    try {
-      const apiUrl = import.meta.env.VITE_API_URL;
-      await axios.post(`${apiUrl}/api/v1/user/logout`, {}, {withCredentials: true})
-      setIsAuthenticated(false)
-      setUserId(null)
-    }
-    catch(e) {
-      console.log(e)
-    }
+    localStorage.removeItem('token')
+    setIsAuthenticated(false)
+    setUserId(null)
+    setAuthError("")
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signin, logout, userId }}>
+    <AuthContext.Provider value={{ isAuthenticated, signin, logout, userId, authError }}>
       {children}
     </AuthContext.Provider>
   );

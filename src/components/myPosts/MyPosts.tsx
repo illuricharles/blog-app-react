@@ -44,7 +44,11 @@ export default function MyPosts() {
             setError(false);
             try {
                 const apiUrl = import.meta.env.VITE_API_URL;
-                const response = await axios.get(`${apiUrl}/api/v1/post/user/posts?page=${currentPage}`, { withCredentials: true });
+                const response = await axios.get(`${apiUrl}/api/v1/post/user/posts?page=${currentPage}`,{
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
                 const { posts, totalPages } = response.data
                 setPosts(posts);
                 setTotalPages(totalPages)
@@ -84,13 +88,11 @@ export default function MyPosts() {
 
     function prevPage() {
         const prevPageNumber = String(currentPage - 1)
-        console.log(prevPageNumber)
         setSearchParams({ page: prevPageNumber })
     }
 
     function nextPage() {
         const nextPageNumber = String(currentPage + 1)
-        console.log(nextPageNumber)
         setSearchParams({ page: nextPageNumber })
     }
 

@@ -46,7 +46,11 @@ export default function BlogContent() {
       setLoading(true)
       try {
         const apiUrl = import.meta.env.VITE_API_URL
-        const response = await axios.get(`${apiUrl}/api/v1/post/${id}`, { withCredentials: true })
+        const response = await axios.get(`${apiUrl}/api/v1/post/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        })
         const { post } = response.data
         const { comments } = post
         setComments(comments)
@@ -107,7 +111,11 @@ export default function BlogContent() {
       const response = await axios.post(`${apiUrl}/api/v1/post/comment`, {
         comment: commentRef.current?.value,
         postId: id
-      }, { withCredentials: true })
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
       const newComment: Comment = response.data.comment
       setComments(prev => {
         return [newComment, ...prev]
